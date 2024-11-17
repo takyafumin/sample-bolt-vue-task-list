@@ -1,0 +1,9 @@
+<script setup lang="ts">
+import TaskList from './components/TaskList.vue'
+</script>
+
+<template>
+  <v-app>
+    <TaskList />
+  </v-app>
+</template>
