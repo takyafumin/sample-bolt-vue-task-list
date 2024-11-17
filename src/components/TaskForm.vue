@@ -4,6 +4,8 @@ import type { Task, Status } from '../types/task';
 import { ASSIGNEE_OPTIONS } from '../data/constants';
 import ProcessFlow from './ProcessFlow.vue';
 import { StatusColors } from '../types/task';
+import { VDateInput } from 'vuetify/labs/VDateInput';
+
 
 const props = defineProps<{
   modelValue: boolean;
@@ -128,12 +130,11 @@ const handleNextAction = async () => {
               class="mb-4"
             ></v-text-field>
 
-            <v-text-field
+            <v-date-input
               v-model="form.dueDate"
               label="期日"
-              type="date"
               variant="outlined"
-            ></v-text-field>
+            ></v-date-input>
           </div>
 
           <div v-else-if="form.status === 'pending'">
