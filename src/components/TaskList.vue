@@ -64,6 +64,27 @@ const getStatusColor = (status: Task['status']) => {
 const getAssigneeName = (value: string) => {
   return ASSIGNEE_OPTIONS.find(opt => opt.value === value)?.label || value;
 };
+
+const filterByStatus = (status: string) => {
+  selectedStatuses.value = [status];
+};
+
+const filterByOverdue = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  searchKeyword.value = '';
+  selectedAssignee.value = '';
+  includeCompleted.value = false;
+  tasks.value = tasks.value.filter(task =>
+    !task.completed &&
+    task.dueDate &&
+    new Date(task.dueDate) <= today
+  );
+};
+
+const filterIncompleteTasks = () => {
+  selectedStatuses.value = ['not_started', 'pending', 'first_approval', 'second_approval'];
+};
 </script>
 
 <template>
@@ -75,7 +96,7 @@ const getAssigneeName = (value: string) => {
 
       <v-card-text class="p-6">
         <!-- ダッシュボード -->
-        <Dashboard :tasks="tasks" />
+        <Dashboard :tasks="tasks" @filter-status="filterByStatus" @filter-overdue="filterByOverdue" @filter-incomplete="filterIncompleteTasks" />
 
         <!-- フィルターセクション -->
         <div class="mb-6 p-4 bg-gray-50 rounded-lg">
