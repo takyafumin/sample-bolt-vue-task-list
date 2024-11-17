@@ -17,17 +17,35 @@ const flashMessage = ref('');
 const flashType = ref<'success' | 'error' | 'info'>('success');
 
 const {
+  /**
+   * 選択中のステータス
+   */
   selectedStatuses,
+  /**
+   * 担当者
+   */
   selectedAssignee,
+  /**
+   * キーワード検索
+   */
   searchKeyword,
+  /**
+   * 完了タスクを含むかどうか
+   */
   includeCompleted,
+  /**
+   * 期日：開始日
+   */
   fromDate,
+  /**
+   * 期日：終了日
+   */
   toDate,
+  /**
+   * フィルタリングされたタスクリスト
+   */
   filteredTasks,
 } = useTaskFilter(tasks.value);
-
-// const fromDate = ref(false);
-// const toDate = ref(false);
 
 const openTaskForm = (task: Task) => {
   selectedTask.value = { ...task };
@@ -57,21 +75,25 @@ const getAssigneeName = (value: string) => {
   return ASSIGNEE_OPTIONS.find(opt => opt.value === value)?.label || value;
 };
 
+/**
+ * タスクのステータスでフィルタリング
+ * @param status
+ */
 const filterByStatus = (status: string) => {
   selectedStatuses.value = [status];
 };
 
+/**
+ * 期限切れのタスクのみ表示
+ */
 const filterByOverdue = () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   searchKeyword.value = '';
   selectedAssignee.value = '';
   includeCompleted.value = false;
-  tasks.value = tasks.value.filter(task =>
-    !task.completed &&
-    task.dueDate &&
-    new Date(task.dueDate) <= today
-  );
+  fromDate.value = null;
+  toDate.value = today;
 };
 
 const filterIncompleteTasks = () => {
@@ -102,23 +124,12 @@ const filterIncompleteTasks = () => {
               label="担当者" density="compact" variant="outlined" hide-details class="max-w-xs" clearable></v-select>
           </div>
           <div class="flex flex-wrap gap-4 items-center mb-4">
-            <v-date-input
-              v-model="fromDate"
-              label="from"
-              variant="outlined"
-              clearable=true
+            <v-date-input v-model="fromDate" label="from" variant="outlined" clearable=true
               @click:clear="fromDate = null">
             </v-date-input> 〜
-            <v-date-input
-              v-model="toDate"
-              label="to"
-              variant="outlined"
-              clearable=true
-              @click:clear="toDate = null">
+            <v-date-input v-model="toDate" label="to" variant="outlined" clearable=true @click:clear="toDate = null">
             </v-date-input>
           </div>
-          <div>{{ fromDate }}</div>
-          <div>{{ toDate }}</div>
 
           <div class="flex flex-wrap gap-2 items-center">
             <div v-for="status in STATUS_OPTIONS.filter(s => s.value !== 'completed' && s.value !== 'cancelled')"
