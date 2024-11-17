@@ -13,10 +13,10 @@ const totalIncomplete = computed(() => {
 const overdueTasksCount = computed(() => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
-  return props.tasks.filter(task => 
-    !task.completed && 
-    task.dueDate && 
+
+  return props.tasks.filter(task =>
+    !task.completed &&
+    task.dueDate &&
     new Date(task.dueDate) <= today
   ).length;
 });
@@ -32,10 +32,10 @@ const secondApprovalCount = computed(() => {
 const completedThisMonth = computed(() => {
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  
-  return props.tasks.filter(task => 
-    task.status === 'completed' && 
-    task.completionDate && 
+
+  return props.tasks.filter(task =>
+    task.status === 'completed' &&
+    task.completionDate &&
     new Date(task.completionDate) >= startOfMonth
   ).length;
 });
@@ -52,7 +52,7 @@ const completedThisMonth = computed(() => {
             size="28"
             class="mr-2 text-blue-darken-2"
           ></v-icon>
-          <div class="text-subtitle-1 font-weight-medium">未完了タスク</div>
+          <div class="text-subtitle-1 font-weight-medium">未完了</div>
         </div>
         <div class="text-h4 font-weight-bold text-blue-darken-2">
           {{ totalIncomplete }}
