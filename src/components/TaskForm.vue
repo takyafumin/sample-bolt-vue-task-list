@@ -4,6 +4,10 @@ import type { Task, Status } from '../types/task';
 import { ASSIGNEE_OPTIONS } from '../data/constants';
 import ProcessFlow from './ProcessFlow.vue';
 import { StatusColors } from '../types/task';
+import NotStartedForm from './forms/NotStartedForm.vue';
+import PendingForm from './forms/PendingForm.vue';
+import FirstApprovalForm from './forms/FirstApprovalForm.vue';
+import SecondApprovalForm from './forms/SecondApprovalForm.vue';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -110,58 +114,10 @@ const handleNextAction = async () => {
 
         <v-container>
           <!-- 現在のステータスに応じたフォーム -->
-          <div v-if="form.status === 'not_started'">
-            <v-select
-              v-model="form.assignee"
-              :items="ASSIGNEE_OPTIONS"
-              item-title="label"
-              item-value="value"
-              label="担当者"
-              variant="outlined"
-              class="mb-4"
-            ></v-select>
-
-            <v-text-field
-              v-model="form.tags"
-              label="タグ（カンマ区切り）"
-              variant="outlined"
-              class="mb-4"
-            ></v-text-field>
-
-            <v-text-field
-              v-model="form.dueDate"
-              label="期日"
-              type="date"
-              variant="outlined"
-            ></v-text-field>
-          </div>
-
-          <div v-else-if="form.status === 'pending'">
-            <v-textarea
-              v-model="form.applicationReason"
-              label="申請理由"
-              variant="outlined"
-              rows="3"
-            ></v-textarea>
-          </div>
-
-          <div v-else-if="form.status === 'first_approval'">
-            <v-textarea
-              v-model="form.firstApprovalReason"
-              label="一次承認理由"
-              variant="outlined"
-              rows="3"
-            ></v-textarea>
-          </div>
-
-          <div v-else-if="form.status === 'second_approval'">
-            <v-textarea
-              v-model="form.secondApprovalReason"
-              label="二次承認理由"
-              variant="outlined"
-              rows="3"
-            ></v-textarea>
-          </div>
+          <NotStartedForm v-if="form.status === 'not_started'" v-model:form="form" />
+          <PendingForm v-else-if="form.status === 'pending'" v-model:form="form" />
+          <FirstApprovalForm v-else-if="form.status === 'first_approval'" v-model:form="form" />
+          <SecondApprovalForm v-else-if="form.status === 'second_approval'" v-model:form="form" />
 
           <!-- 過去の承認情報の表示 -->
           <v-card v-if="form.status !== 'not_started'" class="mt-6 bg-grey-lighten-4">
