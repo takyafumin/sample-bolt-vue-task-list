@@ -16,7 +16,7 @@ const steps = [
 const getStepState = (stepValue: string) => {
   const statusIndex = steps.findIndex(s => s.value === props.status);
   const stepIndex = steps.findIndex(s => s.value === stepValue);
-  
+
   if (stepIndex < statusIndex || (props.status === 'completed' && stepValue === 'completed')) {
     return 'completed';
   } else if (stepIndex === statusIndex) {
@@ -61,11 +61,6 @@ const getStepState = (stepValue: string) => {
 .v-stepper-header {
   box-shadow: none !important;
   border: none !important;
-}
-
-.v-stepper-item {
-  padding: 10px !important;
-  flex: 1;
 }
 
 .border-green {
