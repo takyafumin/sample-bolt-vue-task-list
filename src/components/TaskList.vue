@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import type { Task } from '../types/task';
 import { STATUS_OPTIONS, ASSIGNEE_OPTIONS } from '../data/constants';
 import { sampleTasks } from '../data/sampleTasks';
 import TaskForm from './TaskForm.vue';
 import FlashMessage from './FlashMessage.vue';
 import Dashboard from './Dashboard.vue';
+import { useTaskFilter } from '../composables/useTaskFilter';
 
 const tasks = ref<Task[]>(sampleTasks);
 const showTaskForm = ref(false);
@@ -14,28 +15,13 @@ const showFlash = ref(false);
 const flashMessage = ref('');
 const flashType = ref<'success' | 'error' | 'info'>('success');
 
-// フィルター状態
-const selectedStatuses = ref(['not_started', 'pending', 'first_approval', 'second_approval']);
-const selectedAssignee = ref('');
-const searchKeyword = ref('');
-const includeCompleted = ref(false);
-
-// フィルタリングされたタスク
-const filteredTasks = computed(() => {
-  return tasks.value.filter(task => {
-    // ステータスフィルター
-    if (!includeCompleted.value && task.status === 'completed') return false;
-    if (selectedStatuses.value.length > 0 && !selectedStatuses.value.includes(task.status)) return false;
-
-    // 担当者フィルター
-    if (selectedAssignee.value && task.assignee !== selectedAssignee.value) return false;
-
-    // キーワード検索
-    if (searchKeyword.value && !task.title.toLowerCase().includes(searchKeyword.value.toLowerCase())) return false;
-
-    return true;
-  });
-});
+const {
+  selectedStatuses,
+  selectedAssignee,
+  searchKeyword,
+  includeCompleted,
+  filteredTasks
+} = useTaskFilter(tasks.value);
 
 const openTaskForm = (task: Task) => {
   selectedTask.value = { ...task };
