@@ -93,6 +93,7 @@ const filterByOverdue = () => {
   selectedAssignee.value = '';
   includeCompleted.value = false;
   fromDate.value = null;
+  selectedStatuses.value = ['not_started', 'pending', 'first_approval', 'second_approval'];
   toDate.value = today;
 };
 
