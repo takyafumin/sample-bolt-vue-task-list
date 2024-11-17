@@ -12,8 +12,11 @@ export function useTaskFilter(tasks: Task[]) {
   const filteredTasks = computed(() => {
     return tasks.filter(task => {
       // ステータスフィルター
-      if (!includeCompleted.value && task.status === 'completed') return false;
-      if (selectedStatuses.value.length > 0 && !selectedStatuses.value.includes(task.status)) return false;
+      if (!includeCompleted.value) {
+        if (selectedStatuses.value.length > 0 && !selectedStatuses.value.includes(task.status)) return false;
+      } else {
+        if (selectedStatuses.value.length > 0 && !selectedStatuses.value.includes(task.status) && task.status !== 'completed') return false;
+      }
 
       // 担当者フィルター
       if (selectedAssignee.value && task.assignee !== selectedAssignee.value) return false;

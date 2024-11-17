@@ -76,11 +76,28 @@ const getAssigneeName = (value: string) => {
 };
 
 /**
+ * 未完了のタスクのみ表示
+ */
+const filterIncompleteTasks = () => {
+  selectedStatuses.value = ['not_started', 'pending', 'first_approval', 'second_approval'];
+  searchKeyword.value = '';
+  selectedAssignee.value = '';
+  fromDate.value = null;
+  toDate.value = null;
+  includeCompleted.value = false;
+};
+
+/**
  * タスクのステータスでフィルタリング
  * @param status
  */
 const filterByStatus = (status: string) => {
   selectedStatuses.value = [status];
+  searchKeyword.value = '';
+  selectedAssignee.value = '';
+  fromDate.value = null;
+  toDate.value = null;
+  includeCompleted.value = (status === 'completed') ? true : false;
 };
 
 /**
@@ -95,10 +112,6 @@ const filterByOverdue = () => {
   fromDate.value = null;
   selectedStatuses.value = ['not_started', 'pending', 'first_approval', 'second_approval'];
   toDate.value = today;
-};
-
-const filterIncompleteTasks = () => {
-  selectedStatuses.value = ['not_started', 'pending', 'first_approval', 'second_approval'];
 };
 </script>
 
