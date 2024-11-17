@@ -39,12 +39,30 @@ const completedThisMonth = computed(() => {
     new Date(task.completionDate) >= startOfMonth
   ).length;
 });
+
+const emit = defineEmits<{
+  (e: 'filter-status', status: string): void;
+  (e: 'filter-overdue'): void;
+  (e: 'filter-incomplete'): void;
+}>();
+
+const handleFilterStatus = (status: string) => {
+  emit('filter-status', status);
+};
+
+const handleFilterOverdue = () => {
+  emit('filter-overdue');
+};
+
+const handleFilterIncomplete = () => {
+  emit('filter-incomplete');
+};
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
     <!-- 未完了タスク -->
-    <v-card class="bg-blue-lighten-5">
+    <v-card class="bg-blue-lighten-5" @click="handleFilterIncomplete">
       <v-card-text>
         <div class="d-flex align-center mb-2">
           <v-icon
@@ -62,7 +80,7 @@ const completedThisMonth = computed(() => {
     </v-card>
 
     <!-- 期日超過タスク -->
-    <v-card class="bg-red-lighten-5">
+    <v-card class="bg-red-lighten-5" @click="handleFilterOverdue">
       <v-card-text>
         <div class="d-flex align-center mb-2">
           <v-icon
@@ -80,7 +98,7 @@ const completedThisMonth = computed(() => {
     </v-card>
 
     <!-- 一次承認中 -->
-    <v-card class="bg-amber-lighten-5">
+    <v-card class="bg-amber-lighten-5" @click="handleFilterStatus('first_approval')">
       <v-card-text>
         <div class="d-flex align-center mb-2">
           <v-icon
@@ -98,7 +116,7 @@ const completedThisMonth = computed(() => {
     </v-card>
 
     <!-- 二次承認中 -->
-    <v-card class="bg-light-blue-lighten-5">
+    <v-card class="bg-light-blue-lighten-5" @click="handleFilterStatus('second_approval')">
       <v-card-text>
         <div class="d-flex align-center mb-2">
           <v-icon
@@ -116,7 +134,7 @@ const completedThisMonth = computed(() => {
     </v-card>
 
     <!-- 今月の完了 -->
-    <v-card class="bg-green-lighten-5">
+    <v-card class="bg-green-lighten-5" @click="handleFilterStatus('completed')">
       <v-card-text>
         <div class="d-flex align-center mb-2">
           <v-icon
