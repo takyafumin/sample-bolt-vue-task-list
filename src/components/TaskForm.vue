@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import type { Task, Status } from '../types/task';
 import { ASSIGNEE_OPTIONS } from '../data/constants';
 import ProcessFlow from './ProcessFlow.vue';
+import { StatusColors } from '../types/task';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -15,8 +16,6 @@ const emit = defineEmits<{
 }>();
 
 const form = ref<Partial<Task>>({});
-
-const selectedStatuses = ref<Status[]>(['not_started', 'pending']);
 
 const resetForm = () => {
   if (props.task) {
@@ -198,6 +197,10 @@ const handleNextAction = async () => {
               <div v-if="form.secondApprovalDate" class="mb-2">
                 <strong>二次承認日時:</strong>
                 {{ new Date(form.secondApprovalDate).toLocaleString('ja-JP') }}
+              </div>
+              <div v-if="form.status" class="mb-2">
+                <strong>ステータス:</strong>
+                <span :style="{ color: StatusColors[form.status] }">{{ form.status }}</span>
               </div>
             </v-card-text>
           </v-card>
