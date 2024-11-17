@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { Task } from '../types/task';
+import type { Task, Status } from '../types/task';
 import { ASSIGNEE_OPTIONS } from '../data/constants';
 import ProcessFlow from './ProcessFlow.vue';
 
@@ -15,6 +15,8 @@ const emit = defineEmits<{
 }>();
 
 const form = ref<Partial<Task>>({});
+
+const selectedStatuses = ref<Status[]>(['not_started', 'pending']);
 
 const resetForm = () => {
   if (props.task) {
@@ -32,7 +34,7 @@ watch(() => props.task, () => {
   resetForm();
 }, { immediate: true });
 
-const getNextActionLabel = (status: Task['status']): string => {
+const getNextActionLabel = (status: Status): string => {
   switch (status) {
     case 'not_started':
       return 'アサインする';
@@ -166,11 +168,11 @@ const handleNextAction = async () => {
           <v-card v-if="form.status !== 'not_started'" class="mt-6 bg-grey-lighten-4">
             <v-card-text>
               <div v-if="form.assignee" class="mb-2">
-                <strong>担当者:</strong> 
+                <strong>担当者:</strong>
                 {{ ASSIGNEE_OPTIONS.find(opt => opt.value === form.assignee)?.label }}
               </div>
               <div v-if="form.dueDate" class="mb-2">
-                <strong>期日:</strong> 
+                <strong>期日:</strong>
                 {{ new Date(form.dueDate).toLocaleDateString('ja-JP') }}
               </div>
               <div v-if="form.tags" class="mb-2">
@@ -180,21 +182,21 @@ const handleNextAction = async () => {
                 <strong>申請理由:</strong> {{ form.applicationReason }}
               </div>
               <div v-if="form.applicationDate" class="mb-2">
-                <strong>申請日時:</strong> 
+                <strong>申請日時:</strong>
                 {{ new Date(form.applicationDate).toLocaleString('ja-JP') }}
               </div>
               <div v-if="form.firstApprovalReason" class="mb-2">
                 <strong>一次承認理由:</strong> {{ form.firstApprovalReason }}
               </div>
               <div v-if="form.firstApprovalDate" class="mb-2">
-                <strong>一次承認日時:</strong> 
+                <strong>一次承認日時:</strong>
                 {{ new Date(form.firstApprovalDate).toLocaleString('ja-JP') }}
               </div>
               <div v-if="form.secondApprovalReason" class="mb-2">
                 <strong>二次承認理由:</strong> {{ form.secondApprovalReason }}
               </div>
               <div v-if="form.secondApprovalDate" class="mb-2">
-                <strong>二次承認日時:</strong> 
+                <strong>二次承認日時:</strong>
                 {{ new Date(form.secondApprovalDate).toLocaleString('ja-JP') }}
               </div>
             </v-card-text>

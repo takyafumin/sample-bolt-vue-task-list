@@ -1,8 +1,10 @@
+export type Status = 'not_started' | 'pending' | 'first_approval' | 'second_approval' | 'completed' | 'cancelled';
+
 export interface Task {
   id: number;
   title: string;
   completed: boolean;
-  status: 'not_started' | 'pending' | 'first_approval' | 'second_approval' | 'completed' | 'cancelled';
+  status: Status;
   assignee: string;
   dueDate: Date | null;
   tags: string[];
