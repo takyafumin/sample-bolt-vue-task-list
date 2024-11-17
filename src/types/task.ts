@@ -1,5 +1,14 @@
 export type Status = 'not_started' | 'pending' | 'first_approval' | 'second_approval' | 'completed' | 'cancelled';
 
+export const StatusColors: Record<Status, string> = {
+  not_started: 'grey',
+  pending: 'blue',
+  first_approval: 'orange',
+  second_approval: 'purple',
+  completed: 'green',
+  cancelled: 'red',
+};
+
 export interface Task {
   id: number;
   title: string;

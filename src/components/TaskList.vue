@@ -67,7 +67,7 @@ const getAssigneeName = (value: string) => {
 </script>
 
 <template>
-  <v-container class="bg-cyan-50 min-h-screen py-8">
+  <v-container class="bg-cyan-50 min-h-screen py-8" fluid>
     <v-card class="mx-auto max-w-7xl bg-white shadow-lg rounded-lg">
       <v-card-title class="text-center text-2xl font-bold py-6 bg-cyan-600 text-white">
         タスク管理
